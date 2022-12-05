@@ -9,12 +9,7 @@ void setup()
     TCCR1B = TCCR1B & B11111000 | B00000001;    // 修改PWM输出频率
 
     pinMode(PWML, OUTPUT);
-    pinMode(INL2, OUTPUT);
-    pinMode(INL1, OUTPUT);
-
     pinMode(PWMR, OUTPUT);
-    pinMode(INR2, OUTPUT);
-    pinMode(INR1, OUTPUT);
 
     pinMode(ENCODER_A_L, INPUT);
     pinMode(ENCODER_B_L, INPUT);
@@ -32,10 +27,11 @@ void setup()
 void loop()
 {
     //监测速度
-    Serial.print("velocity_L: ");
+    /*Serial.print("velocity_L: ");
     Serial.print(velocity_L);
     Serial.print("\t");
     Serial.print("velocity_R: ");
     Serial.print(velocity_R);
-    Serial.print("\t\n");
+    Serial.print("\t");*/
+    
 }

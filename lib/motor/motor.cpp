@@ -1,7 +1,7 @@
 #include "motor.h"
 
-volatile float TARGET_L = 20; // 定义电机1的日标速度值
-volatile float TARGET_R = 20; // 定义电机2的目标速度值
+volatile float TARGET_L = 15; // 定义电机1的日标速度值
+volatile float TARGET_R = 15; // 定义电机2的目标速度值
 volatile float encoderVal_L;  // 在中断里面使用的全局变量需萎定义成volatile类型
 volatile float encoderVal_R;
 volatile float velocity_L;
@@ -98,6 +98,11 @@ int pidcontrol_L(float target, float current)
     if (uL > 255)
     {
         uL = 255;
+        //Serial.print("\n6666\n");
+    }
+    else if(uL<-255)
+    {
+        uL=-255;
     }
     Loutput = uL;
     return (int)Loutput;
@@ -123,6 +128,7 @@ int pidcontrol_R(float target, float current)
         uR = 255;
     }
     Routput = uR;
+    
     return (int)Routput;
 }
 
@@ -136,15 +142,26 @@ void control_L()
     velocity_L = (encoderVal_L / 780) * 3.1415 * 2.0 * (1000 / PERIOD);
 
     Loutput = pidcontrol_L(TARGET_L, velocity_L);
-    if (Loutput > 0)
+    /*if (Loutput > 0)
     {
-        analogWrite(PWML, 128 + 0.5*Loutput);
+        analogWrite(PWML, 128 + Loutput/2);
     }
     else
     {
-        analogWrite(PWML, 128 - 0.5*Loutput);
-    }
+        analogWrite(PWML, 128 + Loutput/2);
+    }*/
+    analogWrite(PWML, 127 + Loutput/2);
     encoderVal_L = 0;
+    //*
+    Serial.print("\n");
+    Serial.print(uL);
+    Serial.print("\n");
+    Serial.print(Loutput);
+    Serial.print("\t\n");
+    Serial.print("velocity_L: ");
+    Serial.print(velocity_L);
+    Serial.print("\t\n");
+    //*
 }
 
 /*
@@ -157,11 +174,11 @@ void control_R()
     Loutput = pidcontrol_R(TARGET_R, velocity_R);
     if (Routput > 0)
     {
-        analogWrite(PWMR, 128 + 0.5*Routput);
+        analogWrite(PWMR, 128 - Routput/2);
     }
     else
     {
-        analogWrite(PWMR, 128 + 0.5*Routput);
+        analogWrite(PWMR, 128 - Routput/2);
     }
     encoderVal_R = 0;
 }
