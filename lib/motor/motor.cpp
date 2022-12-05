@@ -10,9 +10,9 @@ volatile float velocity_R;
 volatile float uL = 0;
 volatile float uR = 0;
 
-volatile float Lel;   // 电机1当前时刻的误差e(k)
-volatile float Lell;  // 上一时刻的误差e(k-1)
-volatile float Lelll; // 上上时刻的误差e(k-2)
+volatile float LeI;   // 电机1当前时刻的误差e(k)
+volatile float LeII;  // 上一时刻的误差e(k-1)
+volatile float LeIII; // 上上时刻的误差e(k-2)
 volatile int Loutput;
 
 volatile float Rel;   // 电机2当前时刻的误差e(k)
@@ -87,14 +87,14 @@ void getEncoder_R(void)
 */
 int pidcontrol_L(float target, float current)
 {
-    Lel = target - current;
+    LeI = target - current;
     float kp = 6, TI = 100, TD = 15, T = PERIOD;
     float q0 = kp * (1 + T / TI + TD / T);
     float q1 = -kp * (1 + 2 * TD / T);
     float q2 = kp * TD / T;
-    uL = uL + q0 * Lel + q1 * Lell + q2 * Lelll;
-    Lelll = Lell;
-    Lell = Lel;
+    uL = uL + q0 * LeI + q1 * LeII + q2 * LeIII;
+    LeIII = LeII;
+    LeII = LeI;
     if (uL > 255)
     {
         uL = 255;
