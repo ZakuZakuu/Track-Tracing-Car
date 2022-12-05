@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"name": "Track-Tracing-Car",
+			"path": "."
+		}
+	],
+    "settings": {
+        "files.associations": {
+            "math.h": "c",
+            "task_2": "cpp",
+            "windows.h": "c",
+            "pid.h": "c",
+            "stdlib.h": "c",
+            "typeinfo": "c"
+        },
+        "better-comments.highlightPlainText": true
+    }
+}
