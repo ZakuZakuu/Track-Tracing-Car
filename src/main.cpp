@@ -6,7 +6,7 @@ extern float velocity_R;
 
 void setup()
 {
-    TCCR1B = TCCR1B & B11111000 | B00000001;
+    TCCR1B = TCCR1B & B11111000 | B00000001;    // 修改PWM输出频率
 
     pinMode(PWML, OUTPUT);
     pinMode(INL2, OUTPUT);
@@ -31,6 +31,7 @@ void setup()
 
 void loop()
 {
+    //监测速度
     Serial.print("velocity_L: ");
     Serial.print(velocity_L);
     Serial.print("\t");

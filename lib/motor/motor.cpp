@@ -20,7 +20,9 @@ volatile float Rell;  // 上一时刻的误差e(k-1)
 volatile float Relll; // 上上时刻的诱差e(k-2)
 volatile int Routput;
 
-// 获取电机1的编码器值
+/*
+ @brief 获取电机1的编码器值
+*/
 void getEncoder_L(void)
 {
     if (digitalRead(ENCODER_A_L) == LOW)
@@ -47,7 +49,9 @@ void getEncoder_L(void)
     }
 }
 
-// 获取电机2的编码器值
+/*
+ @brief 获取电机2的编码器值
+*/
 void getEncoder_R(void)
 {
     if (digitalRead(ENCODER_A_R) == LOW)
@@ -76,7 +80,11 @@ void getEncoder_R(void)
 
 /// ---------------------------------------------------------------------------- ///
 
-// 电机1的PID算法
+/*
+    @brief 电机1的PID算法
+    @param target 目标速度
+    @param current 当前速度
+*/
 int pidcontrol_L(float target, float current)
 {
     Lel = target - current;
@@ -95,7 +103,11 @@ int pidcontrol_L(float target, float current)
     return (int)Loutput;
 }
 
-// 电机2的PID算法
+/*
+    @brief 电机2的PID算法
+    @param target 目标速度
+    @param current 当前速度
+*/
 int pidcontrol_R(float target, float current)
 {
     Rel = target - current;
@@ -116,7 +128,9 @@ int pidcontrol_R(float target, float current)
 
 /// ---------------------------------------------------------------------------- ///
 
-// 电机1速度和方向控制
+/*
+    @brief 电机1速度和方向控制
+*/
 void control_L()
 {
     velocity_L = (encoderVal_L / 780) * 3.1415 * 2.0 * (1000 / PERIOD);
@@ -133,7 +147,9 @@ void control_L()
     encoderVal_L = 0;
 }
 
-// 电机2速度和方向控制
+/*
+    @brief 电机2速度和方向控制
+*/
 void control_R()
 {
     velocity_R = (encoderVal_R / 780) * 3.1415 * 2.0 * (1000 / PERIOD);
@@ -152,6 +168,9 @@ void control_R()
 
 /// ---------------------------------------------------------------------------- ///
 
+/*
+    @brief 电机1、2的控制封装
+*/
 void control(void)
 {
     control_L();
