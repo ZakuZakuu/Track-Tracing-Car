@@ -33,54 +33,36 @@ if (counter < 30 && counter > -30)
     }
 }
 
-void moveright()
-{
-    TARGET_L = 5;
-    TARGET_R = 0;
-}
-
-void moveleft()
-{
-    TARGET_L = 0;
-    TARGET_R = 5;
-}
-
-void moveup()
-{
-    TARGET_L = 5;
-    TARGET_R = 5;
-}
-
-void movedown()
-{
-    TARGET_L = -5;
-    TARGET_R = -5;
-}
-
-void movestop()
-{
-    TARGET_L = 0;
-    TARGET_R = 0;
-}
 
 void mode(char X)
 {
     switch (X)
     {
     case 'r':
-        moveright();
+        TARGET_L += 2.5;
+        TARGET_R -= 2.5;
         break;
     case 'l':
-        moveleft();
+        TARGET_L -= 2.5;
+        TARGET_R += 2.5;
         break;
     case 'u':
-        moveup();
+        TARGET_L += 5;
+        TARGET_R += 5;
         break;
     case 'd':
-        movedown();
+        TARGET_L -= 5;
+        TARGET_R -= 5;
         break;
     case 's':
-        movestop();
+        TARGET_L = 0;
+        TARGET_R = 0;
+        break;
+    case '1':
+        break;
+    case '2':
+        break;
+    case '3':
         break;
     default:
         break;
