@@ -5,6 +5,7 @@
 #include <Arduino.h>
 #include <motor.h>
 #include <MsTimer2.h>
+#include <arm.h>
 
 void LaiHuiZhuan(void);
 void moveright();

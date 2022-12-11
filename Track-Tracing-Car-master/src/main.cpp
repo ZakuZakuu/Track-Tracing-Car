@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <motor.h>
 #include <trace.h>
+#include <arm.h>
 #include <SoftwareSerial.h>
 
 char X;                              //定义一个变量存数据。
@@ -29,6 +30,7 @@ void setup()
     attachInterrupt(0, getEncoder_L, CHANGE);
     attachInterrupt(1, getEncoder_R, CHANGE);
     Serial.begin(9600);
+    Arm_Init();
     MsTimer2::set(PERIOD, control);
     MsTimer2::start();
 
@@ -40,7 +42,6 @@ void setup()
 void loop()
 {
     /*
-    //监测速度
     Serial.print("velocity_L: ");
     Serial.print(velocity_L);
     Serial.print("\t");
@@ -48,6 +49,7 @@ void loop()
     Serial.print(velocity_R);
     Serial.print("\t\n");
     */
+    
     bluetooth(&X);
     mode(X);
 }
