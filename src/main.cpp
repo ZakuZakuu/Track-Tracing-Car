@@ -16,8 +16,6 @@ void setup()
     TCCR1B = TCCR1B & B11111000 | B00000001;    // 修改PWM输出频率
     TCCR1C = TCCR1C & B11111000 | B00000001;    // 修改PWM输出频率
 
-    pinMode(POWERCHECK, INPUT_PULLUP);
-
     pinMode(PWML, OUTPUT);
     pinMode(PWMR, OUTPUT);
 
@@ -27,10 +25,11 @@ void setup()
     pinMode(ENCODER_A_R, INPUT);
     pinMode(ENCODER_B_R, INPUT);
 
+    Arm_Init();
+
     attachInterrupt(0, getEncoder_L, CHANGE);
     attachInterrupt(1, getEncoder_R, CHANGE);
     Serial.begin(9600);
-    Arm_Init();
     MsTimer2::set(PERIOD, control);
     MsTimer2::start();
 
@@ -49,7 +48,4 @@ void loop()
     Serial.print(velocity_R);
     Serial.print("\t\n");
     */
-    
-    bluetooth(&X);
-    mode(X);
 }

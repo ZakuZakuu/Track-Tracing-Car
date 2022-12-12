@@ -2,7 +2,7 @@
 
 #define _ARM
 #include <Arduino.h>
-#include <Servo.h>
+#include<Servo_Hardware_PWM.h>
 
 void Arm_Init();
 void Arm_Up();
@@ -11,7 +11,7 @@ void Arm_Close();
 void Arm_Open();
 
 
-#define JOINT_PIN 6
-#define GRAB_PIN 7
+#define JOINT_PIN 10
+#define GRAB_PIN 8
 
 #endif

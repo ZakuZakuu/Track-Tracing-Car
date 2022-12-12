@@ -146,11 +146,13 @@ void control_R()
 /*
     @brief 电机1、2的控制封装
 */
+extern char X;
 void control(void)
 {
     //LaiHuiZhuan();
     control_L();
     control_R();
+    bluetooth(&X);
 }
 
 /// ---------------------------------------------------------------------------- ///

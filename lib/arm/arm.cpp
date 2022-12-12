@@ -7,8 +7,8 @@ void Arm_Init()
 {
     Joint.attach(JOINT_PIN);
     Grab.attach(GRAB_PIN);
-    Joint.write(0);
-    Grab.write(180);
+    Joint.write(90);
+    Grab.write(120);
 }
 
 void Arm_Up()
@@ -16,14 +16,14 @@ void Arm_Up()
     Joint.write(0);
 }
 
-void Arm_Dowm()
+void Arm_Down()
 {
     Joint.write(90);
 }
 
 void Arm_Close()
 {
-    Grab.write(180);
+    Grab.write(170);
 }
 
 void Arm_Open()

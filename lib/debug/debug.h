@@ -13,7 +13,7 @@ void moveleft();
 void moveup();
 void movedown();
 void movestop();
-void mode(char X);
+void mode(char *X);
 void bluetooth(char* pX);
 
 #endif
