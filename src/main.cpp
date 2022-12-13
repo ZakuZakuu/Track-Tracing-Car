@@ -48,4 +48,5 @@ void loop()
     Serial.print(velocity_R);
     Serial.print("\t\n");
     */
+    bluetooth(&X);
 }

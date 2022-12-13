@@ -12,6 +12,7 @@ void Arm_Open();
 
 
 #define JOINT_PIN 10
-#define GRAB_PIN 8
+#define GRAB_PIN 9
+#define ROTATE_PIN 8
 
 #endif

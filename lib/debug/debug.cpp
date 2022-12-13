@@ -2,6 +2,7 @@
 
 extern Servo Joint;
 extern Servo Grab;
+extern Servo Rotate;
 extern int counter, counter_step;
 extern float TARGET_L, TARGET_R;
 
@@ -67,26 +68,23 @@ void mode(char *X)
         *X = '0';
         break;
 
-    //todo 修改下面的代码，不使用Servo库
-    case 'I':
-        pinMode(PWML, INPUT);
+    case '1':
         Joint.write(0);
-        pinMode(PWML, OUTPUT);
         break;
-    case 'L':
-        pinMode(PWML, INPUT);
+    case '2':
         Joint.write(90);
-        pinMode(PWML, OUTPUT);
         break;
-    case 'g':
-        pinMode(PWML, INPUT);
+    case '3':
         Grab.write(120);
-        pinMode(PWML, OUTPUT);
         break;
-    case 'h':
-        pinMode(PWML, INPUT);
+    case '4':
         Grab.write(180);
-        pinMode(PWML, OUTPUT);
+        break;
+    case '5':
+        Rotate.write(0);
+        break;
+    case '6':
+        Rotate.write(90);
         break;
     default:
         break;

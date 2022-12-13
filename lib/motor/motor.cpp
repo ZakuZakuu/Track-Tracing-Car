@@ -152,7 +152,6 @@ void control(void)
     //LaiHuiZhuan();
     control_L();
     control_R();
-    bluetooth(&X);
 }
 
 /// ---------------------------------------------------------------------------- ///
