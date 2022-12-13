@@ -69,24 +69,26 @@ void mode(char *X)
         break;
 
     case '1':
-        Joint.write(0);
+        Arm_Up();
         break;
     case '2':
-        Joint.write(90);
+        Arm_Down();
         break;
     case '3':
-        Grab.write(120);
+        Arm_Open();
         break;
     case '4':
-        Grab.write(180);
+        Arm_Close();
         break;
     case '5':
-        Rotate.write(0);
+        Arm_Horizon();
         break;
     case '6':
-        Rotate.write(90);
+        Arm_Lift();
         break;
     default:
         break;
     }
+
+    *X = '0';
 }

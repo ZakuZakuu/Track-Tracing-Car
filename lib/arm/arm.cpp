@@ -3,6 +3,7 @@
 Servo Joint;
 Servo Grab;
 Servo Rotate;
+volatile int GrabAngle = 110;
 
 void Arm_Init()
 {
@@ -16,7 +17,7 @@ void Arm_Init()
 
 void Arm_Up()
 {
-    Joint.write(0);
+    Joint.write(40);
 }
 
 void Arm_Down()
@@ -26,10 +27,28 @@ void Arm_Down()
 
 void Arm_Close()
 {
-    Grab.write(170);
+    if (GrabAngle <= 170)
+        GrabAngle += 10;
+    else
+        GrabAngle = 180;
+    Grab.write(GrabAngle);
 }
 
 void Arm_Open()
 {
-    Grab.write(120);
+    if (GrabAngle >= 130)
+        GrabAngle -= 10;
+    else
+        GrabAngle = 120;
+    Grab.write(GrabAngle);
+}
+
+void Arm_Horizon()
+{
+    Rotate.write(0);
+}
+
+void Arm_Lift()
+{
+    Rotate.write(90);
 }
