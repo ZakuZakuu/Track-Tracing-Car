@@ -1,10 +1,20 @@
 #include "motor.h"
+#include "debug.h"
+#include "trace.h"
 
 extern Servo Joint;
 extern Servo Grab;
 extern Servo Rotate;
 extern int counter, counter_step;
 extern float TARGET_L, TARGET_R;
+
+extern int Sig_M;
+extern int Sig_L1;
+extern int Sig_L2;
+extern int Sig_R1;
+extern int Sig_R2;
+
+int Arm_Position = 1;
 
 void bluetooth(char* pX)
 {
@@ -81,14 +91,26 @@ void mode(char *X)
         Arm_Close();
         break;
     case '5':
-        Arm_Horizon();
+        if (Arm_Position)
+        {
+            Arm_Lift();
+            Arm_Position = 0;
+        }
+        else
+        {
+            Arm_Horizon();
+            Arm_Position = 1;
+        }
         break;
     case '6':
-        Arm_Lift();
+        /// 循迹模式
+        
         break;
+
     default:
         break;
     }
 
-    *X = '0';
+    if (*X != '6')
+        *X = '0';
 }

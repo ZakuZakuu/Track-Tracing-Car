@@ -10,6 +10,15 @@ extern float TARGET_L;
 extern float TARGET_R;
 extern float velocity_L;
 extern float velocity_R;
+extern int Sig_M;
+extern int Sig_L1;
+extern int Sig_L2;
+extern int Sig_R1;
+extern int Sig_R2;
+
+extern int Sig_M;
+
+int Trace_On = 0;
 
 void setup()
 {
@@ -26,6 +35,7 @@ void setup()
     pinMode(ENCODER_B_R, INPUT);
 
     Arm_Init();
+    Trace_Init();
 
     attachInterrupt(0, getEncoder_L, CHANGE);
     attachInterrupt(1, getEncoder_R, CHANGE);
@@ -40,6 +50,12 @@ void setup()
 
 void loop()
 {
+    Sig_M = digitalRead(Det_M);
+    Sig_L1 = digitalRead(Det_L1);
+    Sig_L2 = digitalRead(Det_L2);
+    Sig_R1 = digitalRead(Det_R1);
+    Sig_R2 = digitalRead(Det_R2);
+    
     /*
     Serial.print("velocity_L: ");
     Serial.print(velocity_L);
@@ -48,5 +64,45 @@ void loop()
     Serial.print(velocity_R);
     Serial.print("\t\n");
     */
-    bluetooth(&X);
+    Serial.print("mode: ");
+    Serial.print(X);
+    Serial.print(" Det_M: ");
+    Serial.print(Sig_M);
+    Serial.print("\t\n");
+
+    if (X == '6')
+    {
+        Trace_On = !Trace_On;
+        X = '0';
+    }
+
+    if (Trace_On)
+    {
+        if ((Sig_M == 1 && Sig_L1 == 1 && Sig_R1 == 1) || (Sig_M == 0 && Sig_L1 == 0 && Sig_R1 == 0))
+        {
+        //!注意 实际车头的方向与我们定义的相反！！
+            TARGET_L = 0;
+            TARGET_R = 0;
+        }
+        else if ((Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 1) || (Sig_M == 1 && Sig_R1 == 0 && Sig_L1 == 1))
+        {
+            TARGET_L = 0;
+            TARGET_R = -5;
+        }
+        else if ((Sig_M == 0 && Sig_R1 == 1 && Sig_L1 == 0) || (Sig_M == 1 && Sig_R1 == 1 && Sig_L1 == 0))
+        {
+            TARGET_L = -5;
+            TARGET_R = 0;
+        }
+        else if (Sig_M == 1 && Sig_R1 == 0 && Sig_L1 == 0)
+        {
+            TARGET_L = -5;
+            TARGET_R = -5;
+
+        }
+    }
+    else
+    {
+        bluetooth(&X);
+    }
 }

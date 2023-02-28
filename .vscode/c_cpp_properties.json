@@ -10,9 +10,9 @@
             "includePath": [
                 "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/include",
                 "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/src",
-                "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/lib/trace",
                 "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/lib/debug",
                 "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/lib/motor",
+                "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/lib/trace",
                 "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/lib/arm",
                 "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/.pio/libdeps/ATmega2560/Servo Hardware PWM/src",
                 "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/.pio/libdeps/ATmega2560/Servo/src",
@@ -32,9 +32,9 @@
                 "path": [
                     "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/include",
                     "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/src",
-                    "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/lib/trace",
                     "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/lib/debug",
                     "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/lib/motor",
+                    "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/lib/trace",
                     "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/lib/arm",
                     "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/.pio/libdeps/ATmega2560/Servo Hardware PWM/src",
                     "D:/Desktop/Arduino_Projects/PlatformIO/Track-Tracing-Car/.pio/libdeps/ATmega2560/Servo/src",
@@ -51,7 +51,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60105",
+                "PLATFORMIO=60106",
                 "ARDUINO_AVR_MEGA2560",
                 "F_CPU=16000000L",
                 "ARDUINO_ARCH_AVR",
