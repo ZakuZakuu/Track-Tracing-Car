@@ -78,27 +78,51 @@ void loop()
 
     if (Trace_On)
     {
-        if ((Sig_M == 1 && Sig_L1 == 1 && Sig_R1 == 1) || (Sig_M == 0 && Sig_L1 == 0 && Sig_R1 == 0))
+        //! 注意:实际车头的方向与我们定义的相反！！
+        /// 停止
+        if ((Sig_M == 1 && Sig_L1 == 1 && Sig_R1 == 1 && Sig_L2 == 1 && Sig_R2 == 1))
         {
-        //!注意 实际车头的方向与我们定义的相反！！
             TARGET_L = 0;
             TARGET_R = 0;
         }
-        else if ((Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 1) || (Sig_M == 1 && Sig_R1 == 0 && Sig_L1 == 1))
+        /// 慢速转向
+        else if ((Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 1 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 1 && Sig_R1 == 0 && Sig_L1 == 1 && Sig_L2 == 0 && Sig_R2 == 0))
         {
-            TARGET_L = 0;
+            TARGET_L = 2;
             TARGET_R = -5;
         }
-        else if ((Sig_M == 0 && Sig_R1 == 1 && Sig_L1 == 0) || (Sig_M == 1 && Sig_R1 == 1 && Sig_L1 == 0))
+        else if ((Sig_M == 0 && Sig_R1 == 1 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 1 && Sig_R1 == 1 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0))
         {
             TARGET_L = -5;
-            TARGET_R = 0;
+            TARGET_R = 2;
         }
-        else if (Sig_M == 1 && Sig_R1 == 0 && Sig_L1 == 0)
+        /// 快速转向
+        else if ((Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 1 && Sig_L2 == 1 && Sig_R2 == 0) || (Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 1 && Sig_R2 == 0))
         {
-            TARGET_L = -5;
-            TARGET_R = -5;
-
+            TARGET_L = 4;
+            TARGET_R = -6;
+        }
+        else if ((Sig_M == 0 && Sig_R1 == 1 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 1) || (Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 1))
+        {
+            TARGET_L = -6;
+            TARGET_R = 4;
+        }
+        /// 直角转向
+        else if (Sig_M == 1 && Sig_L1 == 1 && Sig_L2 == 1)
+        {
+            TARGET_L = 10;
+            TARGET_R = -10;
+        }
+        else if (Sig_M == 1 && Sig_R1 == 1 && Sig_R2 == 1)
+        {
+            TARGET_L = -10;
+            TARGET_R = 10;
+        }
+        /// 直行
+        else if ((Sig_M == 1 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 1 && Sig_R1 == 1 && Sig_L1 == 1 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 0 && Sig_L1 == 0 && Sig_R1 == 0 && Sig_L2 == 0 && Sig_R2 == 0))
+        {
+            TARGET_L = -3;
+            TARGET_R = -3;
         }
     }
     else
