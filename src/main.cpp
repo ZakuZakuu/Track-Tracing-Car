@@ -4,6 +4,16 @@
 #include <arm.h>
 #include <SoftwareSerial.h>
 
+#define STR -12
+#define LOW_F -14
+#define LOW_L -4
+#define MID_F -12
+#define MID_L -2
+#define FST_F -10
+#define FST_L 0
+#define EXT_F -8
+#define EXT_L 4
+
 char X='6';                              //定义一个变量存数据。
 
 extern float TARGET_L;
@@ -44,12 +54,20 @@ void setup()
     attachInterrupt(0, getEncoder_L, CHANGE);
     attachInterrupt(1, getEncoder_R, CHANGE);
     Serial.begin(9600);
-    MsTimer2::set(PERIOD, control);
-    MsTimer2::start();
+    //MsTimer2::set(PERIOD, control);
+    //MsTimer2::start();
 
     Serial.println("BT is ready!");//
     Serial3.begin(9600);//bluetooth
 
+    analogWrite(PWML, 128);
+    analogWrite(PWMR, 128);
+
+    while(millis() < 3000){}
+    Arm_Close();
+    while(millis() < 5000){}
+    Arm_Up();
+    while(millis() < 7000){}
 }
 
 void loop()
@@ -90,78 +108,79 @@ void loop()
     Serial.print(Sig_R4);
     Serial.println("  ");
 
-    if (X == '6')
-    {
-        Trace_On = !Trace_On;
-        X = '0';
-    }
+   //! 注意:实际车头的方向与我们定义的相反！！
+    /// 直行
 
-    if (Trace_On)
+    if (Sig_M == 1)
     {
-        //! 注意:实际车头的方向与我们定义的相反！！
-        /// 停止
-        double v=3;
-        int t=1;
-        if ((Sig_M == 1 && Sig_L1 == 1 && Sig_R1 == 1 && Sig_L2 == 1 && Sig_R2 == 1))
-        {
-            TARGET_L = 0;
-            TARGET_R = 0;
-        }
-        /// 慢速转向
-        else if ((Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 1 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 1 && Sig_R1 == 0 && Sig_L1 == 1 && Sig_L2 == 0 && Sig_R2 == 0))
-        {
-            TARGET_L = v;
-            TARGET_R = -2*v;
-            delay(t);
-        }
-        else if ((Sig_M == 0 && Sig_R1 == 1 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 1 && Sig_R1 == 1 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0))
-        {
-            TARGET_L = -2*v;
-            TARGET_R = v;
-            delay(t);
-        }
-        /// 快速转向
-        else if ((Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 1 && Sig_L2 == 1 && Sig_R2 == 0) || (Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 1 && Sig_R2 == 0))
-        {
-            TARGET_L = 6*v;
-            TARGET_R = -6*v;
-            delay(t);
-        }
-        else if ((Sig_M == 0 && Sig_R1 == 1 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 1) || (Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 1))
-        {
-            TARGET_L = -6*v;
-            TARGET_R = 6*v;
-            delay(t);
-        }
-        /// 直角转向
-        else if (Sig_M == 1 && Sig_L1 == 1 && Sig_L2 == 1)
-        {
-            TARGET_L = 8*v;
-            TARGET_R = -8*v;
-            last=1;
-            delay(t);
-        }
-        else if (Sig_M == 1 && Sig_R1 == 1 && Sig_R2 == 1)
-        {
-            TARGET_L = -8*v;
-            TARGET_R = 8*v;
-            last=-1;
-            delay(t);
-        }
-        /// 直行
-        else if ((Sig_M == 1 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 1 && Sig_R1 == 1 && Sig_L1 == 1 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 0 && Sig_L1 == 0 && Sig_R1 == 0 && Sig_L2 == 0 && Sig_R2 == 0))
-        {
-            TARGET_L = -2*v;
-            TARGET_R = -2*v;
-        }
-        else if (Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0)
-        {
-            TARGET_L = 15*last;
-            TARGET_R = -15*last;
-        }
+        TARGET_L = STR;
+        TARGET_R = STR;
     }
-    else
+    /// 慢速转向
+    if ((Sig_L1 == 1))
     {
-        bluetooth(&X);
+        TARGET_L = LOW_L;
+        TARGET_R = LOW_F;
     }
+    if (Sig_R1 == 1)
+    {
+        TARGET_L = LOW_F;
+        TARGET_R = LOW_L;
+    }
+    /// 中速转向
+    if (Sig_L2 == 1)
+    {
+        TARGET_L = MID_L;
+        TARGET_R = MID_F;
+    }
+    if (Sig_R2 == 1)
+    {
+        TARGET_L = MID_F;
+        TARGET_R = MID_L;
+    }
+    
+    ///快速转向
+    if (Sig_L3 == 1)
+    {
+        TARGET_L = FST_L;
+        TARGET_R = FST_F;
+    }
+    if (Sig_R3 == 1)
+    {
+        TARGET_L = FST_F;
+        TARGET_R = FST_L;
+    }
+    ///极速转向
+    if (Sig_L4 == 1)
+    {
+        TARGET_L = EXT_L;
+        TARGET_R = EXT_F;
+    }
+    if (Sig_R4 == 1)
+    {
+        TARGET_L = EXT_F;
+        TARGET_R = EXT_L;
+    }
+    
+    /*/// 直角转向
+    if (Sig_M == 1 && Sig_L1 == 1 && Sig_L2 == 1)
+    {
+        TARGET_L = 10;
+        TARGET_R = -10;
+    }
+    if (Sig_M == 1 && Sig_R1 == 1 && Sig_R2 == 1)
+    {
+        TARGET_L = -10;
+        TARGET_R = 10;
+    }*/
+
+    /// 停止
+    if ((Sig_M == 1 && Sig_L1 == 1 && Sig_L2 == 1&& Sig_R1 == 1 && Sig_R2 == 1))
+    {
+        TARGET_L = 0;
+        TARGET_R = 0;
+    }
+    analogWrite(PWML, 128 + TARGET_L*5);
+    analogWrite(PWMR, 128 + TARGET_R*5);
+        
 }

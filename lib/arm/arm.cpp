@@ -27,20 +27,22 @@ void Arm_Down()
 
 void Arm_Close()
 {
-    if (GrabAngle <= 170)
+    /*if (GrabAngle <= 170)
         GrabAngle += 10;
     else
         GrabAngle = 180;
-    Grab.write(GrabAngle);
+    Grab.write(GrabAngle);*/
+    Grab.write(160);
 }
 
 void Arm_Open()
 {
-    if (GrabAngle >= 130)
+    /*if (GrabAngle >= 130)
         GrabAngle -= 10;
     else
         GrabAngle = 120;
-    Grab.write(GrabAngle);
+    Grab.write(GrabAngle);*/
+    Grab.write(120);
 }
 
 void Arm_Horizon()
