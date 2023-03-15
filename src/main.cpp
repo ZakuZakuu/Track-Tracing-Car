@@ -4,7 +4,7 @@
 #include <arm.h>
 #include <SoftwareSerial.h>
 
-char X;                              //定义一个变量存数据。
+char X='6';                              //定义一个变量存数据。
 
 extern float TARGET_L;
 extern float TARGET_R;
@@ -15,8 +15,12 @@ extern int Sig_L1;
 extern int Sig_L2;
 extern int Sig_R1;
 extern int Sig_R2;
+extern int last;
 
-extern int Sig_M;
+extern int Sig_L3;
+extern int Sig_L4;
+extern int Sig_R3;
+extern int Sig_R4;
 
 int Trace_On = 0;
 
@@ -50,11 +54,7 @@ void setup()
 
 void loop()
 {
-    Sig_M = digitalRead(Det_M);
-    Sig_L1 = digitalRead(Det_L1);
-    Sig_L2 = digitalRead(Det_L2);
-    Sig_R1 = digitalRead(Det_R1);
-    Sig_R2 = digitalRead(Det_R2);
+    Detect();
     
     /*
     Serial.print("velocity_L: ");
@@ -63,12 +63,32 @@ void loop()
     Serial.print("velocity_R: ");
     Serial.print(velocity_R);
     Serial.print("\t\n");
-    */
     Serial.print("mode: ");
     Serial.print(X);
     Serial.print(" Det_M: ");
     Serial.print(Sig_M);
     Serial.print("\t\n");
+    */
+
+    Serial.print("M");
+    Serial.print(Sig_M);
+    Serial.print("  L1 ");
+    Serial.print(Sig_L1);
+    Serial.print("  L2 ");
+    Serial.print(Sig_L2);
+    Serial.print("  R1 ");
+    Serial.print(Sig_R1);
+    Serial.print("  R2 ");
+    Serial.print(Sig_R2);
+    Serial.print("  L3 ");
+    Serial.print(Sig_L3);
+    Serial.print("  L4 ");
+    Serial.print(Sig_L4);
+    Serial.print("  R3 ");
+    Serial.print(Sig_R3);
+    Serial.print("  R4 ");
+    Serial.print(Sig_R4);
+    Serial.println("  ");
 
     if (X == '6')
     {
@@ -80,6 +100,8 @@ void loop()
     {
         //! 注意:实际车头的方向与我们定义的相反！！
         /// 停止
+        double v=3;
+        int t=1;
         if ((Sig_M == 1 && Sig_L1 == 1 && Sig_R1 == 1 && Sig_L2 == 1 && Sig_R2 == 1))
         {
             TARGET_L = 0;
@@ -88,41 +110,54 @@ void loop()
         /// 慢速转向
         else if ((Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 1 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 1 && Sig_R1 == 0 && Sig_L1 == 1 && Sig_L2 == 0 && Sig_R2 == 0))
         {
-            TARGET_L = 2;
-            TARGET_R = -5;
+            TARGET_L = v;
+            TARGET_R = -2*v;
+            delay(t);
         }
         else if ((Sig_M == 0 && Sig_R1 == 1 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 1 && Sig_R1 == 1 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0))
         {
-            TARGET_L = -5;
-            TARGET_R = 2;
+            TARGET_L = -2*v;
+            TARGET_R = v;
+            delay(t);
         }
         /// 快速转向
         else if ((Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 1 && Sig_L2 == 1 && Sig_R2 == 0) || (Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 1 && Sig_R2 == 0))
         {
-            TARGET_L = 4;
-            TARGET_R = -6;
+            TARGET_L = 6*v;
+            TARGET_R = -6*v;
+            delay(t);
         }
         else if ((Sig_M == 0 && Sig_R1 == 1 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 1) || (Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 1))
         {
-            TARGET_L = -6;
-            TARGET_R = 4;
+            TARGET_L = -6*v;
+            TARGET_R = 6*v;
+            delay(t);
         }
         /// 直角转向
         else if (Sig_M == 1 && Sig_L1 == 1 && Sig_L2 == 1)
         {
-            TARGET_L = 10;
-            TARGET_R = -10;
+            TARGET_L = 8*v;
+            TARGET_R = -8*v;
+            last=1;
+            delay(t);
         }
         else if (Sig_M == 1 && Sig_R1 == 1 && Sig_R2 == 1)
         {
-            TARGET_L = -10;
-            TARGET_R = 10;
+            TARGET_L = -8*v;
+            TARGET_R = 8*v;
+            last=-1;
+            delay(t);
         }
         /// 直行
         else if ((Sig_M == 1 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 1 && Sig_R1 == 1 && Sig_L1 == 1 && Sig_L2 == 0 && Sig_R2 == 0) || (Sig_M == 0 && Sig_L1 == 0 && Sig_R1 == 0 && Sig_L2 == 0 && Sig_R2 == 0))
         {
-            TARGET_L = -3;
-            TARGET_R = -3;
+            TARGET_L = -2*v;
+            TARGET_R = -2*v;
+        }
+        else if (Sig_M == 0 && Sig_R1 == 0 && Sig_L1 == 0 && Sig_L2 == 0 && Sig_R2 == 0)
+        {
+            TARGET_L = 15*last;
+            TARGET_R = -15*last;
         }
     }
     else

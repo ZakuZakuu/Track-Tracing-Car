@@ -10,6 +10,11 @@
 #define Det_R1 52
 #define Det_R2 53
 
+#define Det_L3 42
+#define Det_L4 43
+#define Det_R3 44
+#define Det_R4 45
+
 void Trace_Init();
 void Detect();
 
