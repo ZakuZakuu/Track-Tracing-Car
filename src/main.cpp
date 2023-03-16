@@ -4,15 +4,15 @@
 #include <arm.h>
 #include <SoftwareSerial.h>
 
-#define STR -12
-#define LOW_F -14
-#define LOW_L -4
+#define STR -14
+#define LOW_F -12
+#define LOW_L -8
 #define MID_F -12
 #define MID_L -2
 #define FST_F -10
 #define FST_L 0
-#define EXT_F -8
-#define EXT_L 4
+#define EXT_F -10
+#define EXT_L 8
 
 char X='6';                              //定义一个变量存数据。
 
@@ -33,6 +33,7 @@ extern int Sig_R3;
 extern int Sig_R4;
 
 int Trace_On = 0;
+int startPoint = 0;
 
 void setup()
 {
@@ -68,6 +69,9 @@ void setup()
     while(millis() < 5000){}
     Arm_Up();
     while(millis() < 7000){}
+
+    analogWrite(PWML, 128 - 30);
+    analogWrite(PWMR, 128 - 30);
 }
 
 void loop()
@@ -174,13 +178,28 @@ void loop()
         TARGET_R = 10;
     }*/
 
-    /// 停止
-    if ((Sig_M == 1 && Sig_L1 == 1 && Sig_L2 == 1&& Sig_R1 == 1 && Sig_R2 == 1))
-    {
-        TARGET_L = 0;
-        TARGET_R = 0;
-    }
     analogWrite(PWML, 128 + TARGET_L*5);
     analogWrite(PWMR, 128 + TARGET_R*5);
+    
+    /// 停止
+    if ((Sig_M == 1 && Sig_L1 == 1 && Sig_L2 == 1&& Sig_R1 == 1 && Sig_R2 == 1) && millis() > 20000)
+    {
+        startPoint = millis();
+        
+        analogWrite(PWML, 128 + 30);
+        analogWrite(PWMR, 128 - 30);
+
+        delay(1500);
+        
+        analogWrite(PWML, 128);
+        analogWrite(PWMR, 128);
+        Arm_Down();
+        
+        delay(1500);
+        
+        Arm_Open();
+        
+        while(1){}
+    }
         
 }
